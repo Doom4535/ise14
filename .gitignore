@@ -1,0 +1,6 @@
+# Exclude any license file artifacts
+**/*.lic
+
+# Exclude any archives
+**/*.zip
+**/*.tar*
