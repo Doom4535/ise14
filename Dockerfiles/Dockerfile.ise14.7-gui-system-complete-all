@@ -1,0 +1,12 @@
+FROM ise14-base
+LABEL maintainer="Victor Muñoz <victor@2c-b.cl>"
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY --from=ise14-builder /opt/Xilinx /opt/Xilinx
+
+RUN cp /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/xusbdfwu.hex /usr/share/ && \
+    ln -s libusb-1.0.so.0 /opt/Xilinx/14.7/ISE_DS/ISE/lib/lin64/libusb.so
+
+# Final purge verification and removal of apt+dpkg tools
+RUN apt-get clean autoclean && apt-get autoremove --yes && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/

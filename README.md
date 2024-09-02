@@ -13,7 +13,7 @@ That is why here is a Dockerfile that ease your approach to the FPGA world setti
 
 You can download the needed file [here](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive-ise.html), there you can find the *ISE archive*, you must chose the version *14.7 Windows 10*, don't worry it is really a Linux version inside a virtual machine.
 
-This version was choose because it is not the limited *WebPack* version, it comes with an integrated license, in fact the included license file *XILINX.LIC* enables the following components: *ISE*, *PlanAhead*, *ISIM*, *ChipScopePro_SIOTK*, *ChipScopePro*, *XPS*, *SDK*, *SysGen*, *Simulation*, *Synthesis*, *Implementation*, *Analyzer*, *HLS*, also it support all the devices, as opposite the [Panologic's XC6SLX150 or XC6SLX100](https://github.com/tomverbeure/panologic-g2) are not supported on the WebPack version.
+This version was choosen because it is not the limited *WebPack* version, it comes with an integrated license, in fact the included license file *XILINX.LIC* enables the following components: *ISE*, *PlanAhead*, *ISIM*, *ChipScopePro_SIOTK*, *ChipScopePro*, *XPS*, *SDK*, *SysGen*, *Simulation*, *Synthesis*, *Implementation*, *Analyzer*, *HLS*, also it supports all the devices, such as [Panologic's XC6SLX150 or XC6SLX100](https://github.com/tomverbeure/panologic-g2) which are not supported in the WebPack version.
 
 The file that you need to download and its MD5 sum is:
 
@@ -23,7 +23,7 @@ The file that you need to download and its MD5 sum is:
 
 ## Requirements for building
 
-You need ~95GB of free space for the building process, it took ~2 hours.
+You need ~45GB of free space for the build (excluding the install files (either the VM bundle ~16GB or Installer ~6GB)); the VM bundle method takes me about 2 hours, and the Installer method takes about 1 hour.
 
 ## Build the image
 

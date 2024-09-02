@@ -1,0 +1,20 @@
+FROM ubuntu:20.04 AS ise14-builder
+LABEL stage=builder
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN --mount=type=cache,target=/var/cache/apt \
+    --mount=type=cache,target=/var/lib/apt \
+    apt-get update && apt-get install -y libguestfs-tools linux-image-generic unzip
+
+# Reserve > 16GB for the tmpfs extraction mount
+RUN --mount=type=tmpfs,size=18g,target=/build \
+    --mount=type=bind,target=/tmp/Xilinx_ISE_14.7_Win10_14.7_VM_0213_1.zip,readonly,source=Xilinx_ISE_14.7_Win10_14.7_VM_0213_1.zip \
+    cd /build && \
+    (unzip -v -p /tmp/Xilinx_ISE_14.7_Win10_14.7_VM_0213_1.zip ova/14.7_VM.ova | tar xv) && \
+    rm -rf ova/14.7_VM.ova && \
+    (virt-copy-out -a 14.7_VM-disk001.vmdk /opt/Xilinx /opt) && \
+    (virt-copy-out -a 14.7_VM-disk001.vmdk /home/ise/.Xilinx/Xilinx.lic /opt/Xilinx) && \
+    rm 14.7_VM-disk001.vmdk
+
+RUN apt-get autoclean && apt-get autoremove --yes && \
+    rm -rf /var/lib/apt/lists/*
