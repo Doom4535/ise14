@@ -1,6 +1,8 @@
 FROM ubuntu:20.04 AS ise14-base
 LABEL maintainer="Victor Muñoz <victor@2c-b.cl>"
 ENV DEBIAN_FRONTEND=noninteractive
+ENV ISE_PATH=/opt/Xilinx/14.7/ISE_DS
+ENV XILINXD_LICENSE_FILE=/opt/Xilinx/Xilinx.lic
 
 RUN --mount=type=cache,target=/var/cache/apt \
     --mount=type=cache,target=/var/lib/apt \
@@ -9,5 +11,15 @@ RUN --mount=type=cache,target=/var/cache/apt \
     libsm6 libglib2.0-0 libxi6 libxrender1 libxrandr2 \
     libxtst6 \
     libfreetype6 libfontconfig1 gcc
+
+# Symlink older ncurses
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6 /usr/lib/x86_64-linux-gnu/libncurses.so.5
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libncursesw.so.6 /usr/lib/x86_64-linux-gnu/libncursesw.so
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libncursesw.so.6 /usr/lib/x86_64-linux-gnu/libncursesw.so.5
+
+# Browsers might be nice to have for documentation
+# viewing (maybe firefox and/or nyxt)
+
 RUN apt-get autoclean && apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*

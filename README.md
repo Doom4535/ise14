@@ -54,9 +54,11 @@ There is a main script named ise14[.sh|.ps1|.cmd] that calls `docker run` with t
 
 In Linux it invokes the scripts passing the whole current user context directly to the container instance, that means it shares: `/etc/passwd` to provide user information, `/etc/group` to provide group information, `/tmp/.X11-unix` to share X's Unix Socket for GUI applications, `$HOME` directory to have access to all user files inside the container instance, and sets `$PWD` as the *current working directory*, so in this way you can execute the tools seamlessly and integrating them in your own build scripts. 
 
-This is the main script excerpt that invoke the docker instance:
+This is the main script excerpt to invoke the docker instance:
 
 ```bash
+export LICENSE_MAC="08:00:27:68:c9:35"
+export ISE_PATH="/opt/Xilinx/14.7/ISE_DS"
 docker run --rm \
 --user $(id -u):$(id -g) \
 --mac-address $LICENSE_MAC \
@@ -66,15 +68,37 @@ docker run --rm \
 -e DISPLAY=$DISPLAY \
 -e PATH=/bin:/sbin:$ISE_PATH/ISE/bin/lin64 \
 -e LD_LIBRARY_PATH=$ISE_PATH/ISE/lib/lin64:$ISE_PATH/common/lib/lin64 \
--e XILINXD_LICENSE_FILE=$XILINXD_LICENSE_FILE \
 -v "$PWD:$PWD" \
 -w $PWD \
 -v /dev/bus/usb:/dev/bus/usb \
 --device-cgroup-rule='c *:* rmw' \
+--ipc=host \
 -ti $ISE14_IMAGE $@
 ```
 
-If you have your own license and want to use it, you can overwrite the `LICENSE_MAC` and `XILINXD_LICENSE_FILE` environment variables, LICENSE_MAC is used with the node locked ID of the issued license (the default license has the 08:00:27:68:c9:35 MAC address as node ID), and the XILINXD_LICENSE_FILE variable must point to a valid file inside the docker image (the default is pointed to default one at /opt/Xilinx/Xilinx.lic).
+If you have your own license and want to use it, you can overwrite the `LICENSE_MAC` and `XILINXD_LICENSE_FILE` environment variables, LICENSE_MAC is used with the node locked ID of the issued license (the default license has the 08:00:27:68:c9:35 MAC address as node ID), and the XILINXD_LICENSE_FILE variable must point to a valid file inside the docker image (the default is pointed to default one at /opt/Xilinx/Xilinx.lic). The docker command to launch and specify your own license file:
+
+```bash
+export LICENSE_MAC="08:00:27:68:c9:35"
+export ISE_PATH="/opt/Xilinx/14.7/ISE_DS"
+docker run --rm \
+--user $(id -u):$(id -g) \
+--mac-address $LICENSE_MAC \
+-e XILINXD_LICENSE_FILE=/opt/Xilinx/Xilinx.lic \
+-v $PWD/Xilinx_2017.lic:/opt/Xilinx/Xilinx.lic:ro \
+-v /etc/passwd:/etc/passwd:ro \
+-v /etc/group:/etc/group:ro  \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-e DISPLAY=$DISPLAY \
+-e PATH=/bin:/sbin:$ISE_PATH/ISE/bin/lin64 \
+-e LD_LIBRARY_PATH=$ISE_PATH/ISE/lib/lin64:$ISE_PATH/common/lib/lin64 \
+-v "$PWD:$PWD" \
+-w $PWD \
+-v /dev/bus/usb:/dev/bus/usb \
+--device-cgroup-rule='c *:* rmw' \
+--ipc=host \
+-ti $ISE14_IMAGE $@
+```
 
 In order to use the USB Xilinx Platform Cable, you need to pass the USB tree part of the `dev` filesystem with `-v /dev/bus/usb:/dev/bus/usb` and to give access to hot-plugged devices you have to pass the option `--device-cgroup-rule='c *:* rmw'` to allow access to all major and minor character devices.
 

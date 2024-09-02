@@ -7,11 +7,14 @@ RUN apt-get update && apt-get -y install libncurses5 libx11-6 libsm6 libxi6 \
       libgconf-2-4 libxrender1 libxrandr2 libfreetype6 libfontconfig1 \
       libxm4 libstdc++6 rpcbind gcc
 
-COPY ise14_install_config.txt /tmp/
+COPY Xilinx_2017.lic /opt/
 RUN --mount=type=tmpfs,target=/build \
+    --mount=type=bind,target=/tmp/ise14_install_config.txt,readonly,source=ise14_install_config.txt \
     --mount=type=bind,target=/tmp/Xilinx_ISE_DS_Lin_14.7_1015_1.tar,readonly,source=Xilinx_ISE_DS_Lin_14.7_1015_1.tar \
     tar -xf /tmp/Xilinx_ISE_DS_Lin_14.7_1015_1.tar -C /build && \
     (yes | /build/Xilinx_ISE_DS_Lin_14.7_1015_1/bin/lin64/batchxsetup --batch /tmp/ise14_install_config.txt)
+
+COPY Xilinx_2017.lic /opt/Xilinx/Xilinx.lic
 
 RUN apt-get autoclean && apt-get autoremove --yes && \
     rm -rf /var/lib/apt/lists/*
