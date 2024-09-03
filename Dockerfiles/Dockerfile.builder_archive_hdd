@@ -11,6 +11,7 @@ RUN --mount=type=bind,target=/tmp/Xilinx_ISE_14.7_Win10_14.7_VM_0213_1.zip,reado
     rm -rf ova/14.7_VM.ova && \
     (virt-copy-out -a 14.7_VM-disk001.vmdk /opt/Xilinx /opt) && \
     (virt-copy-out -a 14.7_VM-disk001.vmdk /home/ise/.Xilinx/Xilinx.lic /opt/Xilinx) && \
+    (virt-copy-out -a 14.7_VM-disk001.vmdk /usr/lib64/libXp.so.6.2.0 /opt/Xilinx) && \
     rm 14.7_VM-disk001.vmdk
 
 RUN apt-get autoclean && apt-get autoremove --yes && \
