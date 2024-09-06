@@ -1,8 +1,8 @@
-FROM ise14-base
+FROM ise14.7-base
 LABEL maintainer="Victor Muñoz <victor@2c-b.cl>"
 ENV DEBIAN_FRONTEND=noninteractive
 
-COPY --from=ise14-builder /opt/Xilinx /opt/Xilinx
+COPY --from=ise14.7-builder /opt/Xilinx /opt/Xilinx
 
 RUN cp /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/xusbdfwu.hex /usr/share/ && \
     ln -s /opt/Xilinx/libXp.so.6.2.0 /usr/lib/x86_64-linux-gnu/libXp.so.6.2.0 && \

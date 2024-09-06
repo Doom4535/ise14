@@ -54,6 +54,8 @@ There is a main script named ise14[.sh|.ps1|.cmd] that calls `docker run` with t
 
 In Linux it invokes the scripts passing the whole current user context directly to the container instance, that means it shares: `/etc/passwd` to provide user information, `/etc/group` to provide group information, `/tmp/.X11-unix` to share X's Unix Socket for GUI applications, `$HOME` directory to have access to all user files inside the container instance, and sets `$PWD` as the *current working directory*, so in this way you can execute the tools seamlessly and integrating them in your own build scripts. 
 
+> **Note:** You may need to enable X11 access via `xhost` to allow the container to access the display environment: `xhost +si:localuser:<username>`
+
 This is the main script excerpt to invoke the docker instance:
 
 ```bash

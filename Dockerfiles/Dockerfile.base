@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS ise14-base
+FROM ubuntu:20.04 AS ise14.7-base
 LABEL maintainer="Victor Muñoz <victor@2c-b.cl>"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ISE_PATH=/opt/Xilinx/14.7/ISE_DS
